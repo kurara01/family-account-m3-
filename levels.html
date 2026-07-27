@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭账户 · 等级权益</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .level-header {
+    padding: var(--sp-lg) var(--sp-md);
+    background: linear-gradient(180deg, var(--color-primary) 0%, #2A2A2A 100%);
+    color: var(--color-white); text-align: center;
+  }
+  .level-header-title { font-size: var(--fs-sm); opacity: 0.8; margin-bottom: var(--sp-xxs); }
+  .level-header-current { font-size: 42px; font-weight: 700; font-family: var(--font-num); }
+  .level-header-desc { font-size: var(--fs-sm); opacity: 0.8; margin-top: 2px; }
+  .level-header-progress { margin-top: var(--sp-sm); font-size: var(--fs-xs); opacity: 0.7; }
+
+  .level-list { padding: var(--sp-md); }
+  .level-card {
+    background: var(--color-white); border-radius: var(--radius-lg);
+    padding: var(--sp-md); margin-bottom: var(--sp-sm);
+    box-shadow: var(--shadow-card); display: flex; align-items: center; gap: var(--sp-md);
+  }
+  .level-card.active { border: 2px solid var(--color-primary); }
+  .level-card-icon {
+    width: 52px; height: 52px; border-radius: 50%;
+    background: var(--color-warm-bg); display: flex;
+    align-items: center; justify-content: center;
+    font-size: 24px; flex-shrink: 0;
+  }
+  .level-card.col3 .level-card-icon { background: linear-gradient(135deg, #F7F4EF 0%, #E9D5A0 100%); }
+  .level-card-info { flex: 1; }
+  .level-card-name { font-size: var(--fs-md); font-weight: 700; color: var(--color-title); }
+  .level-card-name .tag { font-size: 9px; vertical-align: middle; margin-left: 4px; }
+  .level-card-rule { font-size: var(--fs-sm); color: var(--color-secondary); margin-top: 2px; }
+  .level-card-bonus { font-size: var(--fs-xs); color: var(--color-placeholder); margin-top: 2px; }
+  .level-crown { font-size: 28px; }
+
+  .level-rule-section {
+    padding: 0 var(--sp-md) var(--sp-lg);
+  }
+  .level-rule-section h3 { font-size: var(--fs-md); color: var(--color-title); margin-bottom: var(--sp-sm); }
+  .level-rule-section ul { padding-left: var(--sp-md); }
+  .level-rule-section li { font-size: var(--fs-sm); color: var(--color-secondary); line-height: 1.7; margin-bottom: var(--sp-xs); }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="navbar" style="background:var(--color-primary);color:var(--color-white);border:none;">
+    <button class="navbar-back" onclick="history.back()" style="color:var(--color-white);">←</button>
+    <div class="navbar-title" style="color:var(--color-white);">等级权益</div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- 当前等级 -->
+    <div class="level-header">
+      <div class="level-header-title">当前家庭等级</div>
+      <div class="level-header-current">V2</div>
+      <div class="level-header-desc">家庭累计储值已达 ¥680 · 1.5倍积分</div>
+      <div class="level-header-progress">距 V3 还差 ¥320 累计储值</div>
+    </div>
+
+    <!-- 等级列表 -->
+    <div class="level-list">
+      <div class="level-card">
+        <div class="level-card-icon">🥉</div>
+        <div class="level-card-info">
+          <div class="level-card-name">V1</div>
+          <div class="level-card-rule">累计储值 ≥ 100元</div>
+          <div class="level-card-bonus">积分倍数：1倍</div>
+        </div>
+      </div>
+
+      <div class="level-card active">
+        <div class="level-card-icon">🥈</div>
+        <div class="level-card-info">
+          <div class="level-card-name">V2 <span class="tag tag-primary">当前</span></div>
+          <div class="level-card-rule">累计储值 ≥ 500元</div>
+          <div class="level-card-bonus">积分倍数：1.5倍</div>
+        </div>
+      </div>
+
+      <div class="level-card col3">
+        <div class="level-card-icon">🥇</div>
+        <div class="level-card-info">
+          <div class="level-card-name">V3</div>
+          <div class="level-card-rule">累计储值 ≥ 1,000元</div>
+          <div class="level-card-bonus">积分倍数：2倍</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 规则说明 -->
+    <div class="level-rule-section">
+      <h3>等级规则</h3>
+      <ul>
+        <li>以家庭累计储值总额为唯一判定依据，与当前余额无关</li>
+        <li>所有成员向家庭账户的充值均累加至"家庭累计储值总额"</li>
+        <li>达到门槛即时晋升，次笔消费起享受对应积分倍数</li>
+        <li>降级规则与个人会员体系保持一致</li>
+        <li>家庭解散时等级即时作废，不转入任何个人账户</li>
+        <li>个人会员等级与家庭等级独立计算</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>

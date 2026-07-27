@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>会员码</title>
+<link rel="stylesheet" href="common.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --brown: #6B4C3B;
+  --bg-warm: #F5F2EE;
+}
+
+body {
+  background: var(--bg-warm);
+  font-family: var(--font-cn);
+  display: flex;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 20px 0;
+}
+
+.phone-frame {
+  width: 375px;
+  min-height: 812px;
+  background: var(--bg-warm);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 8px 34px rgba(0,0,0,0.14);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== 导航栏 ===== */
+.navbar {
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 0 16px;
+  flex-shrink: 0;
+}
+.navbar-back {
+  position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+  border: none; background: none; font-size: 22px; cursor: pointer;
+  width: 44px; height: 44px; display: flex; align-items: center; justify-content: center;
+  color: #111;
+}
+.navbar-title {
+  font-size: 16px; font-weight: 700; color: #111;
+}
+.navbar-capsule {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: flex; gap: 4px;
+}
+.navbar-capsule span {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: #111; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; opacity: 0.9;
+}
+
+/* ===== Tab 切换栏 ===== */
+.tab-bar-wrap {
+  padding: 8px 16px 12px; flex-shrink: 0;
+}
+.tab-bar {
+  display: flex; background: var(--bg-warm); border-radius: 20px;
+  padding: 2px; position: relative;
+}
+.tab-item {
+  flex: 1; text-align: center; padding: 7px 0;
+  font-size: 13px; color: #999; cursor: pointer;
+  border-radius: 18px; position: relative; z-index: 2;
+  font-weight: 500; transition: color 0.25s;
+}
+.tab-item.active { color: #fff; font-weight: 600; }
+.tab-slider {
+  position: absolute; top: 2px; bottom: 2px;
+  width: calc(50% - 2px);
+  background: var(--brown); border-radius: 18px;
+  z-index: 1; transition: transform 0.3s cubic-bezier(.4,0,.2,1);
+  box-shadow: 0 2px 6px rgba(107,76,59,0.2);
+}
+.tab-slider.right { transform: translateX(calc(100% + 2px)); }
+
+/* ===== 白色内容卡片 ===== */
+.code-card {
+  margin: 0 16px; flex: 1;
+  background: #fff; border-radius: 16px;
+  overflow: hidden; display: flex; flex-direction: column;
+}
+
+/* ===== 内容区公共 ===== */
+.content-panel {
+  display: none; flex-direction: column; flex: 1;
+}
+.content-panel.active { display: flex; }
+
+/* ===== 头部 ===== */
+.code-header, .family-header {
+  padding: 24px 24px 0; text-align: center;
+}
+.avatar-wrap, .family-avatar-wrap {
+  display: inline-block; position: relative;
+}
+.avatar-circle {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #DBCFC6; display: flex; align-items: center;
+  justify-content: center; font-size: 28px; margin: 0 auto;
+}
+.avatar-badge {
+  display: block; margin: 8px auto 0;
+  padding: 3px 14px; border-radius: 99px;
+  background: var(--brown); color: #fff;
+  font-size: 11px; font-weight: 500; width: fit-content;
+}
+.greeting {
+  margin-top: 10px; font-size: 16px; font-weight: 600; color: #111;
+}
+.family-avatar-circle {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: var(--bg-warm); display: flex; align-items: center;
+  justify-content: center; font-size: 28px; margin: 0 auto;
+}
+.family-name {
+  margin-top: 10px; font-size: 16px; font-weight: 700; color: #111;
+}
+
+/* ===== 三列数据 ===== */
+.stats-row {
+  display: flex; margin: 16px 24px 0;
+  padding-bottom: 16px; border-bottom: 1px dashed #E8E8E8;
+}
+.stat-item { flex: 1; text-align: center; position: relative; }
+.stat-item + .stat-item::before {
+  content: ''; position: absolute; left: 0; top: 50%;
+  transform: translateY(-50%); width: 1px; height: 28px; background: #E8E8E8;
+}
+.stat-value {
+  font-family: var(--font-num); font-size: 22px; font-weight: 700;
+  color: #111; line-height: 1.2;
+}
+.stat-label { font-size: 12px; color: #999; margin-top: 2px; }
+
+/* ===== 二维码区域 ===== */
+.qr-section {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 16px 24px;
+}
+.qr-box {
+  width: 180px; height: 180px; position: relative;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+.qr-grid {
+  display: grid; grid-template-columns: repeat(11, 1fr);
+  grid-template-rows: repeat(11, 1fr); gap: 1.5px;
+  width: 100%; height: 100%;
+}
+.qr-cell { background: transparent; border-radius: 1px; }
+.qr-cell.dark { background: #111; }
+
+.qr-finder {
+  position: absolute; width: 36px; height: 36px;
+  border: 3px solid #111; border-radius: 5px;
+}
+.qr-finder::after {
+  content: ''; position: absolute;
+  width: 22px; height: 22px; background: #111;
+  top: 4px; left: 4px; border-radius: 1px;
+}
+.qr-finder.tl { top: 3px; left: 3px; }
+.qr-finder.tr { top: 3px; right: 3px; }
+.qr-finder.bl { bottom: 3px; left: 3px; }
+
+.qr-center {
+  position: absolute; width: 36px; height: 36px;
+  background: #fff; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08); font-size: 18px;
+}
+
+.qr-refresh {
+  margin-top: 10px; font-size: 12px; color: #999;
+  display: flex; align-items: center; gap: 4px;
+}
+.qr-refresh svg { width: 14px; height: 14px; fill: #999; }
+
+/* ===== 底部按钮 ===== */
+.code-footer {
+  padding: 8px 20px 16px; flex-shrink: 0;
+}
+.btn-pay {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%; height: 46px;
+  border: none; border-radius: 99px;
+  background: var(--brown); color: #fff;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  font-family: var(--font-cn);
+}
+.btn-pay:active { opacity: 0.85; }
+
+/* ===== 底部 slogan ===== */
+.footer-slogan {
+  text-align: center; padding: 16px;
+  font-size: 12px; color: #CCC5BC; flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <!-- 导航栏 -->
+  <div class="navbar">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">会员码</div>
+    <div class="navbar-capsule">
+      <span>⋯</span>
+      <span>−</span>
+      <span>○</span>
+    </div>
+  </div>
+
+  <!-- Tab 切换 -->
+  <div class="tab-bar-wrap">
+    <div class="tab-bar">
+      <div class="tab-slider" id="tabSlider"></div>
+      <div class="tab-item active" data-tab="personal" onclick="switchTab('personal')">个人码</div>
+      <div class="tab-item" data-tab="family" onclick="switchTab('family')">家庭码</div>
+    </div>
+  </div>
+
+  <!-- 内容卡片 -->
+  <div class="code-card">
+
+    <!-- ============ 个人码 ============ -->
+    <div class="content-panel active" id="personalPanel">
+      <div class="code-header">
+        <div class="avatar-wrap">
+          <div class="avatar-circle">🐱</div>
+          <span class="avatar-badge">储值会员</span>
+        </div>
+        <div class="greeting">pan, 您好!</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">10</div>
+          <div class="stat-label">优惠券</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">19,906</div>
+          <div class="stat-label">积分</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">¥100</div>
+          <div class="stat-label">余额</div>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <div class="qr-box">
+          <div class="qr-pattern" style="width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;">
+            <div class="qr-finder tl"></div>
+            <div class="qr-finder tr"></div>
+            <div class="qr-finder bl"></div>
+            <div class="qr-grid" id="personalQrGrid"></div>
+            <div class="qr-center">🐱</div>
+          </div>
+        </div>
+        <div class="qr-refresh">
+          <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          2min自动刷新会员码
+        </div>
+      </div>
+
+      <div class="code-footer">
+        <button class="btn-pay">💚 使用微信支付</button>
+      </div>
+    </div>
+
+    <!-- ============ 家庭码 ============ -->
+    <div class="content-panel" id="familyPanel">
+      <div class="family-header">
+        <div class="family-avatar-wrap">
+          <div class="family-avatar-circle">🏠</div>
+          <span class="avatar-badge">储值会员</span>
+        </div>
+        <div class="family-name">温馨大家庭</div>
+      </div>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <div class="stat-value">3</div>
+          <div class="stat-label">家庭券</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">1,280</div>
+          <div class="stat-label">家庭积分</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-value">¥1,130</div>
+          <div class="stat-label">家庭余额</div>
+        </div>
+      </div>
+
+      <div class="qr-section">
+        <div class="qr-box">
+          <div class="qr-pattern" style="width:100%;height:100%;position:relative;display:flex;align-items:center;justify-content:center;">
+            <div class="qr-finder tl"></div>
+            <div class="qr-finder tr"></div>
+            <div class="qr-finder bl"></div>
+            <div class="qr-grid" id="familyQrGrid"></div>
+            <div class="qr-center">🏠</div>
+          </div>
+        </div>
+        <div class="qr-refresh">
+          <svg viewBox="0 0 24 24"><path d="M17.65 6.35A7.96 7.96 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/></svg>
+          出示家庭会员码消费
+        </div>
+      </div>
+
+      <div class="code-footer">
+        <button class="btn-pay">💚 使用微信支付</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 底部 slogan -->
+  <div class="footer-slogan">陪伴快乐成长 点亮美好生活</div>
+
+</div>
+
+<script>
+// ===== 模拟二维码生成 =====
+function fillQr(id) {
+  var g = document.getElementById(id);
+  if (!g) return;
+  var h = '';
+  for (var i = 0; i < 121; i++) {
+    var r = Math.floor(i / 11), c = i % 11;
+    var skip = (r < 3 && c < 3) || (r < 3 && c > 7) || (r > 7 && c < 3);
+    h += '<div class="qr-cell' + (skip ? '' : (Math.random() > 0.55 ? ' dark' : '')) + '"></div>';
+  }
+  g.innerHTML = h;
+}
+
+fillQr('personalQrGrid');
+fillQr('familyQrGrid');
+
+// ===== Tab 切换 =====
+function switchTab(tab) {
+  var slider = document.getElementById('tabSlider');
+  var items = document.querySelectorAll('.tab-item');
+  var panels = document.querySelectorAll('.content-panel');
+
+  items.forEach(function(el) { el.classList.remove('active'); });
+  panels.forEach(function(el) { el.classList.remove('active'); });
+
+  if (tab === 'family') {
+    slider.classList.add('right');
+    items[1].classList.add('active');
+    document.getElementById('familyPanel').classList.add('active');
+  } else {
+    slider.classList.remove('right');
+    items[0].classList.add('active');
+    document.getElementById('personalPanel').classList.add('active');
+  }
+}
+
+// ===== URL 参数判断 =====
+(function() {
+  var p = new URLSearchParams(window.location.search);
+  if (p.get('tab') === 'family') {
+    document.getElementById('personalPanel').classList.remove('active');
+    document.getElementById('familyPanel').classList.add('active');
+    document.getElementById('tabSlider').classList.add('right');
+    document.querySelectorAll('.tab-item')[1].classList.add('active');
+    document.querySelectorAll('.tab-item')[0].classList.remove('active');
+  }
+})();
+</script>
+
+</body>
+</html>

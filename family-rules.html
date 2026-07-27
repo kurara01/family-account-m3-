@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭账户 · 规则说明</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .rules-section { padding: var(--sp-md); }
+  .rules-section h3 { font-size: var(--fs-md); color: var(--color-title); margin-top: var(--sp-lg); margin-bottom: var(--sp-sm); }
+  .rules-section h3:first-child { margin-top: 0; }
+  .rules-section p { font-size: var(--fs-base); color: var(--color-secondary); line-height: 1.7; margin-bottom: var(--sp-sm); }
+  .rules-section ul { padding-left: var(--sp-md); margin-bottom: var(--sp-sm); }
+  .rules-section li { font-size: var(--fs-base); color: var(--color-secondary); line-height: 1.7; margin-bottom: var(--sp-xs); }
+  .highlight { background: var(--color-warm-bg); padding: var(--sp-sm) var(--sp-md); border-radius: var(--radius-md); border-left: 3px solid var(--color-primary); margin-bottom: var(--sp-sm); }
+  .highlight p { margin-bottom: 0; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="navbar">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">家庭账户规则</div>
+  </div>
+
+  <div class="page-content">
+    <div class="rules-section">
+
+      <h3>一、什么是家庭账户</h3>
+      <p>家庭账户是一个家庭关系容器，拥有独立的家庭余额池、家庭积分池和家庭券包。创建家庭后，家庭成员可通过出示家庭会员码使用家庭资产共享消费。家庭账户不改变个人会员体系，各成员仍保有独立的个人余额/积分/券。一阶段仅开放线下到店场景，线上暂不支持。</p>
+
+      <h3>二、家庭成员</h3>
+      <ul>
+        <li>每个家庭上限 8 人（1 位主号 + 最多 7 名成员）。</li>
+        <li>一个会员同时只能属于一个家庭。</li>
+        <li>主号拥有完整管理权限，包括邀请、解绑、设置消费限额、解散等。</li>
+        <li>成员可主动退出家庭，退出后无法再使用家庭权益。退出前向家庭充值过的金额留在家庭池中，不退还。</li>
+      </ul>
+
+      <h3>三、扣款规则（家庭会员码）</h3>
+      <div class="highlight">
+        <p><strong>先扣家庭余额 → 不足时消费者自选微信/支付宝补差</strong></p>
+      </div>
+      <ul>
+        <li>出示家庭会员码时，优先从家庭余额池扣款。</li>
+        <li>家庭余额不足时，弹窗展示差额金额，消费者选择微信或支付宝补差。</li>
+        <li>差额不可使用个人储值金补差。</li>
+        <li>出示个人会员码时，仅从个人余额扣款，不可动用家庭资产。</li>
+        <li>消费退货时：家庭余额部分退回家庭余额池、差额部分原路返回微信/支付宝、家庭积分从家庭积分池扣回。</li>
+      </ul>
+
+      <h3>四、积分规则</h3>
+      <ul>
+        <li>出示家庭会员码消费 → 积分按家庭等级倍数归入<strong>家庭积分池</strong>。</li>
+        <li>出示个人会员码消费 → 积分归入个人积分池。</li>
+        <li>家庭积分仅可在家庭积分商城中兑换；个人积分仅可兑换个人券，严格隔离。</li>
+        <li>所有家庭成员均可使用家庭积分兑换商品/券，不做限制及频次限制。</li>
+      </ul>
+
+      <h3>五、家庭等级体系（V1/V2/V3）</h3>
+      <ul>
+        <li>以家庭累计储值总额为判定依据（非余额）。</li>
+        <li>V1（≥100元）→ 1倍积分；V2（≥500元）→ 1.5倍；V3（≥1,000元）→ 2倍积分。</li>
+        <li>降级规则与个人会员体系保持一致。</li>
+        <li>解散时等级即时作废，不转移至任何个人账户。</li>
+      </ul>
+
+      <h3>六、家庭券</h3>
+      <ul>
+        <li>用家庭积分在家庭积分商城中兑换，存入家庭券包。</li>
+        <li>仅可在到店POS出示家庭会员码时自动匹配最优券核销。</li>
+        <li>不限定券种，系统已有券类型均可配置。</li>
+        <li>家庭券不可转至个人账户。各营销活动发放的家庭券均属于家庭券包。</li>
+        <li>家庭券可在POS端出示家庭码时自动核销，与个人券结账逻辑一致。</li>
+      </ul>
+
+      <h3>七、消费限额</h3>
+      <ul>
+        <li>主号可为每个成员设置单日消费上限（按自然日0:00-23:59核算）和单笔消费上限。</li>
+        <li>超限后交易阻断，提示"已超出消费限额，请联系主号调整"。</li>
+        <li>不设远程授权审批功能。积分兑换不受消费限额约束。</li>
+      </ul>
+
+      <h3>八、解散家庭</h3>
+      <ul>
+        <li>仅主号可操作，需输入支付密码验证。</li>
+        <li>5步清算流程：解散发起 → 资产核算 → 划转（余额→主号个人；积分作废；未过期家庭券作废）→ 等级作废 → 解散完成。</li>
+        <li>解散后所有成员收到解散通知。小程序端所有家庭数据（消费记录、储值记录等）均不可见，仅CRM后台可查。</li>
+      </ul>
+
+      <h3>九、冻结</h3>
+      <ul>
+        <li>客服/运营可在后台手动冻结/解冻家庭账户。</li>
+        <li>冻结期间禁止所有交易和操作（消费、储值、积分兑换、退出家庭等），仅可查看家庭总余额和消费明细。</li>
+      </ul>
+
+      <h3>十、主号权限</h3>
+      <ul>
+        <li>主号不可转移。</li>
+        <li>家庭成员统称为"成员"（无"子账户"概念），每个成员均为独立会员身份。</li>
+        <li>储值退款规则：余额须全退，按支付账户原路返回，通过客服操作。</li>
+      </ul>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

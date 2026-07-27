@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭账户 · 积分商城</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .mall-header {
+    padding: var(--sp-lg) var(--sp-md);
+    background: var(--color-white);
+    text-align: center;
+    margin-bottom: var(--sp-sm);
+  }
+  .mall-points-label { font-size: var(--fs-sm); color: var(--color-secondary); margin-bottom: var(--sp-xxs); }
+  .mall-points-amount {
+    font-family: var(--font-num); font-size: 42px; font-weight: 700;
+    color: var(--color-title); line-height: 1.2;
+  }
+  .mall-points-hint { font-size: var(--fs-xs); color: var(--color-placeholder); margin-top: 4px; }
+
+  .product-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: var(--sp-sm);
+    padding: 0 var(--sp-md) var(--sp-md);
+  }
+  .product-card {
+    background: var(--color-white); border-radius: var(--radius-md);
+    overflow: hidden; box-shadow: var(--shadow-card); cursor: pointer;
+  }
+  .product-card:active { opacity: 0.85; }
+  .product-img {
+    width: 100%; aspect-ratio: 1;
+    background: var(--color-warm-bg);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+  }
+  .product-info { padding: var(--sp-sm); }
+  .product-name { font-size: var(--fs-base); font-weight: 500; color: var(--color-title); }
+  .product-points {
+    font-family: var(--font-num); font-size: var(--fs-sm); font-weight: 700;
+    color: var(--color-primary); margin-top: 2px;
+  }
+  .product-points-unit { font-size: var(--fs-xs); font-weight: 400; color: var(--color-primary); }
+  .family-tag {
+    display: inline-block; padding: 1px 6px; border-radius: var(--radius-full);
+    font-size: 9px; font-weight: 500; background: var(--color-primary);
+    color: var(--color-white); margin-left: var(--sp-xs); vertical-align: middle;
+  }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="navbar">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">家庭积分商城</div>
+  </div>
+
+  <div class="page-content">
+    <div class="mall-header">
+      <div class="mall-points-label">当前家庭积分</div>
+      <div class="mall-points-amount">1,280</div>
+      <div class="mall-points-hint">仅限家庭积分兑换 · 不可使用个人积分</div>
+    </div>
+
+    <div class="product-grid">
+      <div class="product-card" onclick="exchangeItem('满50减5元券')">
+        <div class="product-img">🎫</div>
+        <div class="product-info">
+          <div class="product-name">满50减5元券<span class="family-tag">家庭</span></div>
+          <div class="product-points">600 <span class="product-points-unit">积分</span></div>
+        </div>
+      </div>
+      <div class="product-card" onclick="exchangeItem('满100减12元券')">
+        <div class="product-img">🎫</div>
+        <div class="product-info">
+          <div class="product-name">满100减12元券<span class="family-tag">家庭</span></div>
+          <div class="product-points">1,200 <span class="product-points-unit">积分</span></div>
+        </div>
+      </div>
+      <div class="product-card" onclick="exchangeItem('无门槛5元券')">
+        <div class="product-img">🎟️</div>
+        <div class="product-info">
+          <div class="product-name">无门槛5元券<span class="family-tag">家庭</span></div>
+          <div class="product-points">400 <span class="product-points-unit">积分</span></div>
+        </div>
+      </div>
+      <div class="product-card" onclick="exchangeItem('9折券')">
+        <div class="product-img">🎟️</div>
+        <div class="product-info">
+          <div class="product-name">全场9折券<span class="family-tag">家庭</span></div>
+          <div class="product-points">800 <span class="product-points-unit">积分</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function exchangeItem(name) {
+  if (confirm('确认使用家庭积分兑换「' + name + '」？')) {
+    alert('兑换成功！券已存入家庭券包，到店出示家庭码即可核销。');
+  }
+}
+</script>
+
+</body>
+</html>

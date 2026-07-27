@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭账户 · 消费明细</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .navbar-right { position:absolute;right:var(--sp-md);top:50%;transform:translateY(-50%);display:flex;gap:4px; }
+  .navbar-right span { font-size:18px;color:var(--color-title);cursor:pointer; }
+
+  .tab-bar { display:flex;background:var(--color-white);border-bottom:0.5px solid #eee; }
+  .tab-item { flex:1;text-align:center;padding:12px 0;font-size:14px;color:#999;cursor:pointer;position:relative; }
+  .tab-item.active { color:var(--color-title);font-weight:600; }
+  .tab-item.active::after { content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:var(--color-title);border-radius:1px; }
+
+  .order-list { padding:8px 12px;background:#f5f5f5; }
+  .order-card { background:var(--color-white);border-radius:8px;margin-bottom:8px;overflow:hidden; }
+  .order-header { display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:0.5px solid #f0f0f0; }
+  .order-title { font-size:13px;font-weight:500;color:var(--color-title);display:flex;align-items:center;gap:4px; }
+  .order-status { font-size:11px;font-weight:500; }
+
+  .order-item { display:flex;align-items:center;padding:10px 12px;border-bottom:0.5px solid #f5f5f5; }
+  .order-item:last-child { border-bottom:none; }
+  .item-img { width:48px;height:48px;border-radius:4px;background:var(--color-warm-bg);display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;margin-right:10px; }
+  .item-info { flex:1;min-width:0; }
+  .item-name { font-size:12px;color:var(--color-title);line-height:1.3; }
+  .item-spec { font-size:11px;color:#bbb;margin-top:2px; }
+  .item-right { text-align:right;flex-shrink:0; }
+  .item-price { font-size:13px;font-weight:600;color:var(--color-title); }
+  .item-qty { font-size:11px;color:#bbb; }
+
+  .order-footer { display:flex;flex-direction:column;padding:8px 12px;background:#FAFAFA;gap:4px; }
+  .order-footer-row { display:flex;align-items:center;justify-content:space-between;width:100%; }
+  .order-time { font-size:11px;color:#bbb; }
+  .order-total { font-size:12px;font-weight:600;color:var(--color-title); }
+  .order-family-pay { font-size:11px;font-weight:400;color:var(--color-secondary); }
+
+  .empty-state { padding:60px 16px;text-align:center;color:#bbb; }
+  .empty-state .empty-icon { font-size:48px;margin-bottom:12px;opacity:0.4; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="navbar" style="position:relative;">
+    <button class="navbar-back" onclick="window.location.href='dashboard.html'">←</button>
+    <div class="navbar-title">家庭消费</div>
+    <div class="navbar-right">
+      <span>⋯</span>
+      <span>○</span>
+    </div>
+  </div>
+
+  <div class="page-content" style="background:#f5f5f5;">
+
+    <div class="tab-bar" style="background:var(--color-white);">
+      <span class="tab-item active" onclick="switchTab(this)">全部</span>
+      <span class="tab-item" onclick="switchTab(this)">已退款</span>
+      <span class="tab-item" onclick="switchTab(this)">已完成</span>
+    </div>
+
+    <div class="order-list">
+      <!-- 订单1 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-title">🧾 杂物社上海长宁来福士店</div>
+          <span class="order-status" style="color:#52C41A;">交易成功</span>
+        </div>
+        <div class="order-item">
+          <div class="item-img">📦</div>
+          <div class="item-info">
+            <div class="item-name">九木杂物社 · 暮光迪士尼手账套装</div>
+            <div class="item-spec"></div>
+          </div>
+          <div class="item-right">
+            <div class="item-price">¥48.69</div>
+            <div class="item-qty">x1</div>
+          </div>
+        </div>
+        <div class="order-footer">
+          <div class="order-footer-row">
+            <span class="order-time">下单时间：2026-06-15 14:32</span>
+            <span class="order-total">实付：¥200</span>
+          </div>
+          <div class="order-family-pay" style="text-align:right;">家庭账户支付¥150</div>
+        </div>
+      </div>
+
+      <!-- 订单2：退款示例 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-title">🧾 杂物社上海长宁国金中心店</div>
+          <span class="order-status" style="color:var(--color-warning);">退款成功</span>
+        </div>
+        <div class="order-item">
+          <div class="item-img">📦</div>
+          <div class="item-info">
+            <div class="item-name">九木杂物社 · 精品文具礼盒</div>
+            <div class="item-spec"></div>
+          </div>
+          <div class="item-right">
+            <div class="item-price">¥80</div>
+            <div class="item-qty">x1</div>
+          </div>
+        </div>
+        <div class="order-footer">
+          <div class="order-footer-row">
+            <span class="order-time">申请时间：2026-06-15 16:30</span>
+            <span class="order-total">退款金额：¥80</span>
+          </div>
+          <div class="order-family-pay" style="text-align:right;">家庭账户退款¥80</div>
+        </div>
+      </div>
+
+      <!-- 订单3 -->
+      <div class="order-card">
+        <div class="order-header">
+          <div class="order-title">🧾 杂物社上海长宁虹桥天地店</div>
+          <span class="order-status" style="color:#52C41A;">交易成功</span>
+        </div>
+        <div class="order-item">
+          <div class="item-img">📦</div>
+          <div class="item-info">
+            <div class="item-name">九木杂物社 · 3D浮雕贴纸（梦幻款）</div>
+            <div class="item-spec"></div>
+          </div>
+          <div class="item-right">
+            <div class="item-price">¥15.90</div>
+            <div class="item-qty">x1</div>
+          </div>
+        </div>
+        <div class="order-footer">
+          <div class="order-footer-row">
+            <span class="order-time">下单时间：2026-06-12 16:08</span>
+            <span class="order-total">实付：¥150</span>
+          </div>
+          <div class="order-family-pay" style="text-align:right;">家庭账户支付¥150</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <div>暂无消费记录</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function switchTab(el) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+</script>
+
+</body>
+</html>

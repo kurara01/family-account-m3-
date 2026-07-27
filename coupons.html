@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>家庭账户 · 家庭券列表</title>
+<link rel="stylesheet" href="common.css">
+<style>
+  .nav-icon-group { display:flex;align-items:center;gap:4px;position:absolute;right:var(--sp-md);top:50%;transform:translateY(-50%); }
+  .nav-icon-group span { font-size:18px;color:var(--color-title);cursor:pointer;width:28px;height:28px;display:flex;align-items:center;justify-content:center; }
+
+  .tab-bar { display:flex;background:var(--color-white);border-bottom:0.5px solid #eee; }
+  .tab-item { flex:1;text-align:center;padding:12px 0;font-size:13px;color:#999;cursor:pointer;position:relative; }
+  .tab-item.active { color:var(--color-title);font-weight:600; }
+  .tab-item.active::after { content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:var(--color-title);border-radius:1px; }
+
+  .coupon-list { padding:8px 12px;background:#f5f5f5; }
+  .coupon-card { background:var(--color-white);border-radius:8px;margin-bottom:8px;overflow:hidden; }
+  .coupon-top { position:relative;padding:0; }
+  .coupon-tag { position:absolute;top:0;left:0;background:var(--color-title);color:var(--color-white);font-size:10px;padding:3px 10px;border-radius:0 0 8px 0;z-index:1; }
+  .coupon-body { display:flex;padding:16px 14px 12px; }
+  .coupon-left { text-align:center;padding-right:14px;border-right:1px dashed #eee;min-width:80px;display:flex;flex-direction:column;justify-content:center; }
+  .coupon-price { font-family:var(--font-num);font-size:26px;font-weight:700;color:#E74C3C;line-height:1; }
+  .coupon-price-sign { font-size:14px; }
+  .coupon-cond { font-size:11px;color:#999;margin-top:2px; }
+  .coupon-right { flex:1;padding-left:14px;display:flex;flex-direction:column;justify-content:center; }
+  .coupon-name { font-size:13px;font-weight:600;color:var(--color-title);line-height:1.4; }
+  .coupon-scope { font-size:11px;color:#999;margin-top:4px; }
+  .coupon-footer { display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-top:0.5px solid #f0f0f0; }
+  .coupon-date { font-size:11px;color:#bbb; }
+  .coupon-action { font-size:12px;color:var(--color-title);font-weight:500;cursor:pointer;display:flex;align-items:center;gap:2px; }
+
+  .empty-state { padding:60px 16px;text-align:center;color:#bbb; }
+  .empty-state .empty-icon { font-size:48px;margin-bottom:12px;opacity:0.4; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+  <div class="navbar" style="position:relative;">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">我的优惠券</div>
+    <div class="nav-icon-group">
+      <span>⋯</span>
+      <span>−</span>
+      <span>○</span>
+    </div>
+  </div>
+
+  <div class="page-content" style="background:#f5f5f5;">
+
+    <!-- Tab -->
+    <div class="tab-bar" style="background:var(--color-white);">
+      <span class="tab-item active" onclick="switchTab(this)">未使用</span>
+      <span class="tab-item" onclick="switchTab(this)">已使用</span>
+      <span class="tab-item" onclick="switchTab(this)">已过期</span>
+    </div>
+
+    <!-- 券列表 -->
+    <div class="coupon-list">
+
+      <!-- 券 1 -->
+      <div class="coupon-card" data-status="available">
+        <div class="coupon-top">
+          <span class="coupon-tag">满减券</span>
+        </div>
+        <div class="coupon-body">
+          <div class="coupon-left">
+            <div class="coupon-price"><span class="coupon-price-sign">¥</span>30</div>
+            <div class="coupon-cond">满100可用</div>
+          </div>
+          <div class="coupon-right">
+            <div class="coupon-name">【晨光员工福利券】满100元减30元优惠券</div>
+            <div class="coupon-scope">九木杂物社门店及微信小程序商城通用</div>
+          </div>
+        </div>
+        <div class="coupon-footer">
+          <span class="coupon-date">自2026-07-24日起2026-08-24日有效</span>
+          <span class="coupon-action" onclick="useCoupon()">去使用 →</span>
+        </div>
+      </div>
+
+      <!-- 券 2 -->
+      <div class="coupon-card" data-status="available">
+        <div class="coupon-top">
+          <span class="coupon-tag">满减券</span>
+        </div>
+        <div class="coupon-body">
+          <div class="coupon-left">
+            <div class="coupon-price"><span class="coupon-price-sign">¥</span>20</div>
+            <div class="coupon-cond">满128可用</div>
+          </div>
+          <div class="coupon-right">
+            <div class="coupon-name">【7月会员日】满128元减20元优惠券</div>
+            <div class="coupon-scope">仅限九木杂物社门店使用</div>
+          </div>
+        </div>
+        <div class="coupon-footer">
+          <span class="coupon-date">自2026-06-25日起2026-07-26日有效</span>
+          <span class="coupon-action" onclick="useCoupon()">去使用 →</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="empty-state" style="display:none;">
+      <div class="empty-icon">📋</div>
+      <div>暂无优惠券</div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function switchTab(el) {
+  document.querySelectorAll('.tab-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+function useCoupon() {
+  alert('出示家庭会员码时自动匹配最优券核销');
+}
+</script>
+
+</body>
+</html>
