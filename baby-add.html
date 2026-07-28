@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>添加宝贝</title>
+<link rel="stylesheet" href="common.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #F5F2EE; font-family: var(--font-cn);
+  display: flex; justify-content: center; min-height: 100vh; padding: 20px 0;
+}
+.phone-frame {
+  width: 375px; min-height: 812px; background: #F5F2EE; border-radius: 20px;
+  overflow: hidden; box-shadow: 0 8px 34px rgba(0,0,0,0.14);
+  position: relative; display: flex; flex-direction: column;
+}
+
+.navbar {
+  height: 48px; display: flex; align-items: center;
+  justify-content: center; position: relative; padding: 0 16px;
+  background: #fff; flex-shrink: 0;
+}
+.navbar-back {
+  position: absolute; left: 6px; top: 50%; transform: translateY(-50%);
+  border: none; background: none; font-size: 22px; cursor: pointer;
+  width: 44px; height: 44px; display: flex; align-items: center;
+  justify-content: center; color: #111;
+}
+.navbar-title { font-size: 16px; font-weight: 700; color: #111; }
+.navbar-right {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: flex; gap: 4px;
+}
+.navbar-right span {
+  width: 22px; height: 22px; border-radius: 4px;
+  background: #111; color: #fff; display: flex; align-items: center;
+  justify-content: center; font-size: 10px; opacity: 0.9;
+}
+
+.form-card {
+  background: #fff; border-radius: 16px;
+  margin: 12px 16px; overflow: hidden;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+}
+
+/* 表单字段 */
+.form-field {
+  padding: 16px 16px 0;
+}
+.form-label {
+  font-size: 14px; font-weight: 600; color: #111; margin-bottom: 8px;
+}
+.form-label .required { color: #E74C3C; margin-right: 2px; }
+.form-label .optional { color: #bbb; font-weight: 400; font-size: 12px; }
+
+/* 性别选择 */
+.gender-options {
+  display: flex; gap: 12px;
+}
+.gender-btn {
+  flex: 1; height: 44px; border: 1px solid #e8e8e8;
+  border-radius: 10px; background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  gap: 6px; font-size: 15px; font-weight: 500;
+  cursor: pointer; transition: all 0.15s;
+  font-family: var(--font-cn); color: #666;
+}
+.gender-btn.selected {
+  border-color: #6B4C3B; background: #F5F0EB; color: #6B4C3B;
+}
+
+/* 输入框 */
+.input-field {
+  width: 100%; height: 44px;
+  border: 1px solid #e8e8e8; border-radius: 10px;
+  padding: 0 14px; font-size: 14px; color: #111;
+  outline: none; font-family: var(--font-cn);
+  background: #fff;
+}
+.input-field:focus { border-color: #6B4C3B; }
+.input-field::placeholder { color: #bbb; }
+.char-count {
+  text-align: right; font-size: 11px; color: #bbb;
+  margin-top: 4px; padding-right: 2px;
+}
+
+/* 日期选择器 */
+.date-selector {
+  width: 100%; height: 44px;
+  border: 1px solid #e8e8e8; border-radius: 10px;
+  padding: 0 14px; font-size: 14px; color: #bbb;
+  display: flex; align-items: center; justify-content: space-between;
+  cursor: pointer; background: #fff;
+}
+.date-selector .arrow { color: #ccc; font-size: 12px; }
+
+/* 喜好标签 */
+.hobby-section {
+  padding: 0 16px 16px;
+}
+.hobby-grid {
+  display: flex; flex-wrap: wrap; gap: 8px;
+}
+.hobby-tag {
+  padding: 8px 16px; border-radius: 99px;
+  border: 1px solid #e8e8e8; background: #fff;
+  font-size: 12px; color: #666; cursor: pointer;
+  transition: all 0.15s; font-family: var(--font-cn);
+}
+.hobby-tag.selected {
+  border-color: #6B4C3B; background: #F5F0EB; color: #6B4C3B; font-weight: 500;
+}
+
+/* 协议 */
+.agreement {
+  padding: 8px 16px 16px;
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 12px; color: #999; line-height: 1.5;
+}
+.agreement input[type="checkbox"] {
+  width: 16px; height: 16px; margin-top: 2px; flex-shrink: 0;
+  accent-color: #6B4C3B; cursor: pointer;
+}
+.agreement a { color: #6B4C3B; text-decoration: underline; cursor: pointer; }
+
+/* 底部 */
+.bottom-action {
+  padding: 8px 20px 24px; flex-shrink: 0;
+}
+.btn-primary {
+  display: flex; align-items: center; justify-content: center;
+  gap: 8px; width: 100%; height: 46px;
+  border: none; border-radius: 99px;
+  background: #6B4C3B; color: #fff;
+  font-size: 16px; font-weight: 700; cursor: pointer;
+  font-family: var(--font-cn);
+}
+.btn-primary:active { opacity: 0.85; }
+.btn-primary:disabled { opacity: 0.4; cursor: default; }
+
+/* 成功弹窗 */
+.success-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.45); z-index: 100;
+  display: none; align-items: center; justify-content: center;
+}
+.success-overlay.show { display: flex; }
+.success-card {
+  width: 280px; background: #fff; border-radius: 16px;
+  padding: 28px 20px 20px; text-align: center;
+}
+.success-icon { font-size: 56px; margin-bottom: 12px; }
+.success-title { font-size: 18px; font-weight: 700; color: #111; margin-bottom: 6px; }
+.success-desc { font-size: 13px; color: #999; margin-bottom: 20px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <div class="navbar">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">添加宝贝</div>
+    <div class="navbar-right">
+      <span>⋯</span>
+      <span>−</span>
+      <span>○</span>
+    </div>
+  </div>
+
+  <div class="page-content" style="flex:1;">
+
+    <div class="form-card">
+
+      <!-- 性别 -->
+      <div class="form-field">
+        <div class="form-label"><span class="required">*</span>宝贝性别</div>
+        <div class="gender-options">
+          <div class="gender-btn selected" onclick="selectGender(this, 'boy')">👦 男生</div>
+          <div class="gender-btn" onclick="selectGender(this, 'girl')">👧 女生</div>
+        </div>
+      </div>
+
+      <!-- 昵称 -->
+      <div class="form-field">
+        <div class="form-label"><span class="required">*</span>宝贝昵称</div>
+        <input class="input-field" id="nickname" type="text" placeholder="请输入宝贝昵称" maxlength="20" oninput="updateCharCount()">
+        <div class="char-count"><span id="charCount">0</span>/20</div>
+      </div>
+
+      <!-- 生日 -->
+      <div class="form-field">
+        <div class="form-label"><span class="required">*</span>宝贝生日</div>
+        <div class="date-selector" onclick="alert('模拟：弹出日期选择器')">
+          <span>请选择出生日期</span>
+          <span class="arrow">›</span>
+        </div>
+        <div style="font-size:10px;color:#bbb;margin-top:3px;">生日用于发送生日礼遇，需凭身份证领取</div>
+      </div>
+
+      <!-- 喜好（选填） -->
+      <div class="form-field" style="padding-top:20px;">
+        <div class="form-label">宝贝喜好 <span class="optional">（选填）</span></div>
+      </div>
+      <div class="hobby-section">
+        <div class="hobby-grid">
+          <span class="hobby-tag" onclick="toggleHobby(this)">潮玩/动漫/IP周边</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">潮流盲盒</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">积木拼搭</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">毛绒玩具</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">早教/智能玩具</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">娃娃玩具</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">户外玩具</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">遥控/电动玩具</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">DIY手工</span>
+          <span class="hobby-tag" onclick="toggleHobby(this)">绘画/涂鸦</span>
+        </div>
+      </div>
+
+      <!-- 协议 -->
+      <div class="agreement" style="border-top:0.5px solid #f0f0f0;margin-top:4px;">
+        <input type="checkbox" id="agreeCheck" onchange="toggleSubmit()">
+        <label for="agreeCheck">我已阅读并同意《<a>宝贝档案服务协议</a>》及《<a>儿童个人信息保护规则</a>》</label>
+      </div>
+
+    </div>
+
+    <!-- 底部按钮 -->
+    <div class="bottom-action">
+      <button class="btn-primary" id="submitBtn" onclick="submitBaby()" disabled>确认添加</button>
+    </div>
+
+  </div>
+
+  <!-- 成功弹窗 -->
+  <div class="success-overlay" id="successOverlay">
+    <div class="success-card">
+      <div class="success-icon">🎉</div>
+      <div class="success-title">添加成功！</div>
+      <div class="success-desc">已为宝贝创建档案<br>生日时将收到专属礼遇通知</div>
+      <button class="btn-primary" onclick="closeSuccess()">知道了</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let selectedGender = 'boy';
+
+function selectGender(el, gender) {
+  document.querySelectorAll('.gender-btn').forEach(b => b.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedGender = gender;
+}
+
+function updateCharCount() {
+  document.getElementById('charCount').textContent = document.getElementById('nickname').value.length;
+}
+
+function toggleHobby(el) {
+  el.classList.toggle('selected');
+}
+
+function toggleSubmit() {
+  document.getElementById('submitBtn').disabled = !document.getElementById('agreeCheck').checked;
+}
+
+function submitBaby() {
+  if (document.getElementById('agreeCheck').checked) {
+    document.getElementById('successOverlay').classList.add('show');
+  }
+}
+
+function closeSuccess() {
+  document.getElementById('successOverlay').classList.remove('show');
+  window.location.href = 'baby-profile.html';
+}
+</script>
+
+</body>
+</html>

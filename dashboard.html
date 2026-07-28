@@ -166,6 +166,26 @@
       </div>
     </div>
 
+    <!-- 抽奖活动入口 -->
+    <div class="mall-entry-card" onclick="goToLottery()" style="background:linear-gradient(135deg,#FDF6EC 0%,#FFF8F0 100%);border:1px solid #F0DAB0;">
+      <div class="mall-entry-icon">🎡</div>
+      <div class="mall-entry-text">
+        <div class="mall-entry-title">家庭好礼 <span style="display:inline-block;padding:1px 8px;border-radius:99px;background:#E74C3C;color:#fff;font-size:9px;font-weight:500;vertical-align:middle;margin-left:2px;">抽奖</span></div>
+        <div class="mall-entry-desc" id="lotteryDesc">完成任务抽好礼 · 今日还可抽 <span class="num" style="font-weight:700;color:#E74C3C;">2</span> 次</div>
+      </div>
+      <span class="mall-entry-arrow">→</span>
+    </div>
+
+    <!-- 宝贝档案入口 -->
+    <div class="mall-entry-card" onclick="goToBabyProfile()" style="background:linear-gradient(135deg,#F7F0E8 0%,#FFFFFF 100%);border-color:#E8DDD0;">
+      <div class="mall-entry-icon">👶</div>
+      <div class="mall-entry-text">
+        <div class="mall-entry-title">宝贝档案 <span style="display:inline-block;padding:1px 8px;border-radius:99px;background:#6B4C3B;color:#fff;font-size:9px;font-weight:500;vertical-align:middle;margin-left:2px;">NEW</span></div>
+        <div class="mall-entry-desc">添加宝贝生日和喜好，获取专属礼遇推荐</div>
+      </div>
+      <span class="mall-entry-arrow">→</span>
+    </div>
+
     <!-- 积分商城入口 -->
     <div class="mall-entry-card" onclick="goToMall()">
       <div class="mall-entry-icon">🎁</div>
@@ -266,6 +286,8 @@ function goToPoints() { window.location.href = 'points.html'; }
 function goToCoupons() { window.location.href = 'coupons.html'; }
 function goToMall() { window.location.href = 'points-mall.html'; }
 function goToLevels() { window.location.href = 'levels.html'; }
+function goToBabyProfile() { window.location.href = 'baby-profile.html'; }
+function goToLottery() { window.location.href = 'lottery.html'; }
 
 window.onload = function() {
   var savedBg = localStorage.getItem('familyBgImage');

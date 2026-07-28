@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>家庭好礼 · 抽奖</title>
+<link rel="stylesheet" href="common.css">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  background: #FFF8F0; font-family: var(--font-cn);
+  display: flex; justify-content: center; min-height: 100vh; padding: 20px 0;
+}
+.phone-frame {
+  width: 375px; min-height: 812px; background: #FFF8F0;
+  border-radius: 20px; overflow: hidden;
+  box-shadow: 0 8px 34px rgba(0,0,0,0.14);
+  position: relative; display: flex; flex-direction: column;
+}
+
+.navbar {
+  height: 48px; display: flex; align-items: center;
+  justify-content: center; position: relative; padding: 0 16px;
+  background: transparent; flex-shrink: 0;
+}
+.navbar-back {
+  position: absolute; left: 6px; border: none; background: none;
+  font-size: 22px; cursor: pointer; width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center; color: #111;
+}
+.navbar-title { font-size: 16px; font-weight: 700; color: #111; }
+
+.page-content { flex: 1; overflow-y: auto; }
+
+/* ===== 顶部活动横幅 ===== */
+.banner {
+  background: linear-gradient(135deg, #E85D3A 0%, #D4380D 100%);
+  margin: 0 16px 16px; border-radius: 16px; padding: 20px;
+  color: #fff; position: relative; overflow: hidden;
+}
+.banner::after {
+  content: ''; position: absolute; right: -30px; top: -30px;
+  width: 120px; height: 120px; border-radius: 50%;
+  background: rgba(255,255,255,0.08);
+}
+.banner-title { font-size: 22px; font-weight: 700; margin-bottom: 4px; }
+.banner-sub { font-size: 13px; opacity: 0.85; line-height: 1.5; }
+
+/* ===== 大转盘区域 ===== */
+.wheel-section {
+  display: flex; flex-direction: column; align-items: center; padding: 0 16px 16px;
+}
+.wheel-container {
+  width: 300px; height: 300px; position: relative;
+  border-radius: 50%; background: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.06);
+  display: flex; align-items: center; justify-content: center;
+}
+.wheel-bg {
+  width: 280px; height: 280px; border-radius: 50%;
+  background: conic-gradient(
+    #FFE8CC 0deg 60deg, #FFF0D6 60deg 120deg,
+    #FFE8CC 120deg 180deg, #FFF0D6 180deg 240deg,
+    #FFE8CC 240deg 300deg, #FFF0D6 300deg 360deg
+  );
+  position: relative; display: flex; align-items: center; justify-content: center;
+}
+.wheel-prizes {
+  position: absolute; width: 100%; height: 100%; border-radius: 50%;
+}
+.wheel-prize {
+  position: absolute;
+  text-align: center;
+  font-size: 11px; font-weight: 600; color: #6B4C3B;
+  transform: translate(-50%, -50%);
+}
+.wheel-prize {
+  position: absolute;
+  width: 60px;
+  text-align: center;
+  font-size: 11px; font-weight: 600; color: #6B4C3B;
+  transform: translate(-50%, -50%);
+}
+/* 圆心(140,140)，半径80px，6扇区中心角 */
+.wheel-prize:nth-child(1) { left: 180px; top: 71px; }   /* 30° */
+.wheel-prize:nth-child(2) { left: 220px; top: 140px; }  /* 90° */
+.wheel-prize:nth-child(3) { left: 180px; top: 209px; }  /* 150° */
+.wheel-prize:nth-child(4) { left: 100px; top: 209px; }  /* 210° */
+.wheel-prize:nth-child(5) { left: 60px; top: 140px; }   /* 270° */
+.wheel-prize:nth-child(6) { left: 100px; top: 71px; }   /* 330° */
+
+.wheel-prize-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+
+.wheel-center {
+  width: 60px; height: 60px; border-radius: 50%;
+  background: #E85D3A; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px; font-weight: 700; cursor: pointer; z-index: 2;
+  box-shadow: 0 2px 8px rgba(232,93,58,0.3);
+  transition: transform 0.15s; position: relative;
+}
+.wheel-center:active { transform: scale(0.9); }
+
+.wheel-pointer {
+  position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 12px solid transparent; border-right: 12px solid transparent;
+  border-top: 16px solid #E85D3A; z-index: 3;
+}
+
+.remain-count {
+  text-align: center; margin-top: 12px;
+  font-size: 13px; color: #999;
+}
+.remain-count .highlight { color: #E85D3A; font-weight: 700; }
+
+/* ===== 任务列表 ===== */
+.task-section {
+  padding: 0 16px;
+}
+.section-title {
+  font-size: 15px; font-weight: 700; color: #111; margin-bottom: 10px;
+}
+
+.task-card {
+  background: #fff; border-radius: 12px; padding: 14px 16px;
+  margin-bottom: 8px; display: flex; align-items: center;
+  gap: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+.task-icon {
+  width: 40px; height: 40px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+}
+.task-icon.baby { background: #FDE6E6; }
+.task-icon.invite { background: #D6E8F5; }
+.task-icon.topup { background: #E8F5E6; }
+.task-icon.shop { background: #FFF3E0; }
+
+.task-info { flex: 1; min-width: 0; }
+.task-title { font-size: 14px; font-weight: 600; color: #111; }
+.task-desc { font-size: 12px; color: #999; margin-top: 2px; }
+.task-reward {
+  font-size: 11px; color: #E85D3A; font-weight: 500;
+  display: flex; align-items: center; gap: 3px;
+}
+
+.task-status {
+  flex-shrink: 0;
+}
+.btn-go {
+  padding: 6px 16px; border-radius: 99px; border: none;
+  background: #6B4C3B; color: #fff; font-size: 12px; font-weight: 500;
+  cursor: pointer; font-family: var(--font-cn);
+}
+.btn-go:active { opacity: 0.8; }
+.btn-go.done {
+  background: #E8E8E8; color: #bbb; cursor: default;
+}
+.btn-go.receive {
+  background: #E85D3A; font-weight: 700;
+}
+
+/* ===== 中奖弹窗 ===== */
+.result-overlay {
+  position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.5); z-index: 100;
+  display: none; align-items: center; justify-content: center;
+}
+.result-overlay.show { display: flex; }
+.result-card {
+  width: 290px; background: #fff; border-radius: 18px;
+  padding: 28px 20px 20px; text-align: center;
+}
+.result-icon { font-size: 64px; margin-bottom: 10px; }
+.result-title { font-size: 20px; font-weight: 700; color: #111; margin-bottom: 4px; }
+.result-prize { font-size: 14px; color: #E85D3A; font-weight: 600; margin-bottom: 8px; }
+.result-desc { font-size: 12px; color: #999; margin-bottom: 20px; line-height: 1.5; }
+</style>
+</head>
+<body>
+
+<div class="phone-frame">
+
+  <div class="navbar">
+    <button class="navbar-back" onclick="history.back()">←</button>
+    <div class="navbar-title">家庭好礼</div>
+  </div>
+
+  <div class="page-content">
+
+    <!-- 活动横幅 -->
+    <div class="banner">
+      <div class="banner-title">🎡 家庭好礼抽奖</div>
+    </div>
+
+    <!-- 大转盘 -->
+    <div class="wheel-section">
+      <div class="wheel-container">
+        <div class="wheel-bg">
+          <div class="wheel-prizes">
+            <div class="wheel-prize"><span class="wheel-prize-icon">🎫</span>满50减10</div>
+            <div class="wheel-prize"><span class="wheel-prize-icon">🧧</span>¥5红包</div>
+            <div class="wheel-prize"><span class="wheel-prize-icon">🎁</span>毛绒玩具</div>
+            <div class="wheel-prize"><span class="wheel-prize-icon">💫</span>积分+50</div>
+            <div class="wheel-prize"><span class="wheel-prize-icon">🎟️</span>9折券</div>
+            <div class="wheel-prize"><span class="wheel-prize-icon">😊</span>谢谢参与</div>
+          </div>
+          <div class="wheel-center" id="spinBtn" onclick="spin()">
+            抽奖
+            <div class="wheel-pointer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="remain-count">今日还可抽 <span class="highlight" id="remainCount">2</span> 次</div>
+    </div>
+
+    <!-- 任务列表 -->
+    <div class="task-section">
+      <div class="section-title">📋 完成任务获取抽奖次数</div>
+
+      <div class="task-card">
+        <div class="task-icon baby">👶</div>
+        <div class="task-info">
+          <div class="task-title">添加宝贝档案</div>
+          <div class="task-desc">填写宝贝生日和喜好，获取专属推荐</div>
+          <div class="task-reward">+1 次抽奖</div>
+        </div>
+        <div class="task-status">
+          <button class="btn-go" onclick="goTask('baby')">去完成</button>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-icon invite">👥</div>
+        <div class="task-info">
+          <div class="task-title">邀请家人加入</div>
+          <div class="task-desc">邀请家人加入家庭组，共享家庭账户</div>
+          <div class="task-reward">+1 次抽奖</div>
+        </div>
+        <div class="task-status">
+          <button class="btn-go" onclick="goTask('invite')">去邀请</button>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-icon topup">💰</div>
+        <div class="task-info">
+          <div class="task-title">向家庭账户储值</div>
+          <div class="task-desc">首次向家庭账户充值任意金额</div>
+          <div class="task-reward">+1 次抽奖</div>
+        </div>
+        <div class="task-status">
+          <button class="btn-go done" onclick="">已完成</button>
+        </div>
+      </div>
+
+      <div class="task-card">
+        <div class="task-icon shop">🛒</div>
+        <div class="task-info">
+          <div class="task-title">使用家庭码消费</div>
+          <div class="task-desc">到店出示家庭会员码完成一笔消费</div>
+          <div class="task-reward">+1 次抽奖</div>
+        </div>
+        <div class="task-status">
+          <button class="btn-go" onclick="goTask('shop')">去消费</button>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="height:20px;"></div>
+  </div>
+
+  <!-- 中奖结果 -->
+  <div class="result-overlay" id="resultOverlay">
+    <div class="result-card">
+      <div class="result-icon" id="resultIcon">🎉</div>
+      <div class="result-title" id="resultTitle">恭喜中奖！</div>
+      <div class="result-prize" id="resultPrize">获得满50减10元券</div>
+      <div class="result-desc" id="resultDesc">券已放入家庭券包，到店出示家庭码即可核销</div>
+      <button class="btn-go" style="width:100%;padding:12px 0;border-radius:99px;background:#6B4C3B;color:#fff;font-size:15px;font-weight:700;border:none;cursor:pointer;font-family:var(--font-cn);" onclick="closeResult()">知道了</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let remain = 2;
+const PRIZES = [
+  { icon: '🎫', name: '满50减10元券', desc: '券已放入家庭券包' },
+  { icon: '🧧', name: '¥5 无门槛红包', desc: '已存入家庭余额池' },
+  { icon: '🎁', name: '毛绒玩具一个', desc: '凭券到店领取' },
+  { icon: '💫', name: '50 家庭积分', desc: '已放入家庭积分池' },
+  { icon: '🎟️', name: '全场9折券', desc: '券已放入家庭券包' },
+  { icon: '😊', name: '谢谢参与', desc: '下次好运！' },
+];
+
+function spin() {
+  if (remain <= 0) {
+    alert('今日抽奖次数已用完，完成任务获取更多次数！');
+    return;
+  }
+  // 模拟转盘动画
+  const btn = document.getElementById('spinBtn');
+  btn.style.transform = 'scale(0.85)';
+  setTimeout(() => {
+    btn.style.transform = '';
+    // 随机中奖
+    const idx = Math.floor(Math.random() * PRIZES.length);
+    const prize = PRIZES[idx];
+    remain--;
+    document.getElementById('remainCount').textContent = remain;
+    document.getElementById('resultIcon').textContent = prize.icon;
+    document.getElementById('resultTitle').textContent = prize.name === '谢谢参与' ? '很遗憾' : '恭喜中奖！';
+    document.getElementById('resultPrize').textContent = prize.name;
+    document.getElementById('resultDesc').textContent = prize.desc;
+    document.getElementById('resultOverlay').classList.add('show');
+  }, 300);
+}
+
+function closeResult() {
+  document.getElementById('resultOverlay').classList.remove('show');
+}
+
+function goTask(task) {
+  var urls = {
+    baby: 'baby-profile.html',
+    invite: 'invite-qr.html',
+    shop: 'member-code.html?tab=family',
+  };
+  if (urls[task]) {
+    window.location.href = urls[task];
+  } else {
+    alert('跳转至' + task);
+  }
+}
+</script>
+
+</body>
+</html>

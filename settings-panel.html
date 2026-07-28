@@ -75,6 +75,92 @@
   .edit-name-card h3 { font-size: var(--fs-md); margin-bottom: var(--sp-md); color: var(--color-title); }
   .edit-name-card .btn-group { display: flex; gap: var(--sp-sm); }
 
+
+  /* 身份标识标签 */
+  .identity-tag {
+    display: inline-flex; align-items: center; gap: 2px;
+    padding: 2px 10px;
+    border-radius: var(--radius-full);
+    font-size: var(--fs-xs);
+    background: var(--color-warm-bg);
+    color: var(--color-title);
+    cursor: pointer;
+    border: 1px dashed #D8CBB8;
+    transition: all 0.15s;
+    margin-top: 2px;
+  }
+  .identity-tag:active { background: #E8E1D8; }
+  .identity-tag::after { content: ' ▾'; font-size: 8px; opacity: 0.5; }
+
+  /* 身份选择弹窗 */
+  .identity-picker {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 20;
+    display: none;
+    align-items: center;
+    justify-content: center;
+  }
+  .identity-picker.show { display: flex; }
+  .identity-picker-card {
+    width: 280px;
+    background: var(--color-white);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-md);
+    text-align: center;
+  }
+  .identity-picker-card h3 {
+    font-size: var(--fs-md);
+    margin-bottom: var(--sp-sm);
+    color: var(--color-title);
+  }
+  .identity-picker-card .member-name { font-size: var(--fs-sm); color: var(--color-secondary); margin-bottom: var(--sp-sm); }
+  .identity-options {
+    display: flex; flex-wrap: wrap; gap: var(--sp-xs);
+    justify-content: center;
+    margin-bottom: var(--sp-md);
+  }
+  .identity-option {
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-size: var(--fs-sm);
+    border: 1px solid var(--color-divider);
+    background: var(--color-white);
+    color: var(--color-body);
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: var(--font-cn);
+  }
+  .identity-option:active { border-color: var(--color-primary); }
+  .identity-option.selected {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border-color: var(--color-primary);
+  }
+  .identity-option.none { color: var(--color-placeholder); font-style: italic; }
+  .identity-custom-area {
+    border-top: 1px solid var(--color-divider);
+    padding-top: var(--sp-sm);
+    margin-top: var(--sp-xs);
+  }
+  .identity-custom-input {
+    width: 100%;
+    padding: 8px 12px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--color-divider);
+    font-size: var(--fs-sm);
+    text-align: center;
+    font-family: var(--font-cn);
+    box-sizing: border-box;
+  }
+  .identity-custom-input:focus { border-color: var(--color-primary); outline: none; }
+  .identity-custom-char-count {
+    font-size: 11px;
+    color: var(--color-placeholder);
+    margin: 4px 0 var(--sp-sm);
+  }
+
   .confirm-overlay { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 30; display: none; align-items: center; justify-content: center; }
   .confirm-overlay.show { display: flex; }
   .confirm-card { width: 290px; background: var(--color-white); border-radius: var(--radius-lg); padding: var(--sp-md); text-align: center; }
@@ -202,6 +288,7 @@
           <div class="member-mgmt-avatar">🧑</div>
           <div class="member-mgmt-info">
             <div class="member-mgmt-name">小明 <span class="tag tag-primary" style="font-size:9px;">主号</span></div>
+            <div class="identity-tag" onclick="showIdentityPicker('小明', this)">爸爸</div>
           </div>
           <span style="font-size:11px;color:var(--color-placeholder);">自己</span>
         </div>
@@ -209,6 +296,7 @@
           <div class="member-mgmt-avatar">👩</div>
           <div class="member-mgmt-info">
             <div class="member-mgmt-name">小红</div>
+            <div class="identity-tag" onclick="showIdentityPicker('小红', this)">妈妈</div>
           </div>
           <button class="btn-remove" onclick="showConfirm('remove','小红')">解绑</button>
         </div>
@@ -216,6 +304,7 @@
           <div class="member-mgmt-avatar">👨‍🦳</div>
           <div class="member-mgmt-info">
             <div class="member-mgmt-name">大刚</div>
+            <div class="identity-tag" onclick="showIdentityPicker('大刚', this)">爷爷</div>
           </div>
           <button class="btn-remove" onclick="showConfirm('remove','大刚')">解绑</button>
         </div>
@@ -331,6 +420,20 @@
     </div>
   </div>
 
+  <!-- 身份选择弹窗 -->
+  <div class="identity-picker" id="identityPicker">
+    <div class="identity-picker-card">
+      <h3>选择家庭身份</h3>
+      <div class="member-name" id="identityPickerName"></div>
+      <div class="identity-options" id="identityOptions"></div>
+      <div class="identity-custom-area">
+        <input class="identity-custom-input" id="identityCustomInput" placeholder="自定义，不超过3个字" maxlength="3" oninput="onCustomInput(this)">
+        <div class="identity-custom-char-count"><span id="customCharCount">0</span>/3</div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="closeIdentityPicker()">确定</button>
+    </div>
+  </div>
+
   <!-- 确认弹窗 -->
   <div class="confirm-overlay" id="confirmOverlay">
     <div class="confirm-card">
@@ -345,6 +448,56 @@
 </div>
 
 <script>
+// --- 身份选择 ---
+const IDENTITIES = ['爸爸', '妈妈', '儿子', '女儿', '爷爷', '奶奶', '外公', '外婆', '哥哥', '姐姐', '弟弟', '妹妹', '不设置'];
+let currentIdentityTarget = null;
+
+function showIdentityPicker(name, tagEl) {
+  currentIdentityTarget = tagEl;
+  document.getElementById('identityPickerName').textContent = '为 ' + name + ' 选择身份';
+  const current = tagEl.textContent.trim();
+  const optionsEl = document.getElementById('identityOptions');
+  optionsEl.innerHTML = IDENTITIES.map(id => {
+    const cls = 'identity-option' + (id === current ? ' selected' : '') + (id === '不设置' ? ' none' : '');
+    return '<span class="' + cls + '" onclick="selectIdentity(this, \'' + id + '\')">' + id + '</span>';
+  }).join('');
+  document.getElementById('identityCustomInput').value = '';
+  document.getElementById('customCharCount').textContent = '0';
+  document.getElementById('identityPicker').classList.add('show');
+}
+
+function selectIdentity(el, identity) {
+  document.querySelectorAll('.identity-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  el._selectedIdentity = identity;
+  document.getElementById('identityCustomInput').value = '';
+  document.getElementById('customCharCount').textContent = '0';
+}
+
+function onCustomInput(input) {
+  document.getElementById('customCharCount').textContent = input.value.length;
+  if (input.value.length > 0) {
+    document.querySelectorAll('.identity-option').forEach(o => o.classList.remove('selected'));
+  }
+}
+
+function closeIdentityPicker() {
+  const customValue = document.getElementById('identityCustomInput').value.trim();
+  if (customValue && currentIdentityTarget) {
+    currentIdentityTarget.textContent = customValue;
+    currentIdentityTarget.style.color = '';
+  } else {
+    const selected = document.querySelector('.identity-option.selected');
+    if (selected && currentIdentityTarget) {
+      const identity = selected._selectedIdentity || selected.textContent.trim();
+      currentIdentityTarget.textContent = identity === '不设置' ? '未设置' : identity;
+      currentIdentityTarget.style.color = identity === '不设置' ? 'var(--color-placeholder)' : '';
+    }
+  }
+  document.getElementById('identityPicker').classList.remove('show');
+  currentIdentityTarget = null;
+}
+
 // --- 名称编辑 ---
 function showEditName() {
   document.getElementById('nameInput').value = document.getElementById('currentFamilyName').textContent;
