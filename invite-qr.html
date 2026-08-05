@@ -6,23 +6,31 @@
 <title>家庭账户 · 邀请二维码</title>
 <link rel="stylesheet" href="common.css">
 <style>
+  .page-content { padding-bottom: 0; display: flex; flex-direction: column; }
   .qr-section {
-    margin: var(--sp-md);
     background: var(--color-white);
-    border-radius: var(--radius-lg);
     overflow: hidden;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
   }
 
-  /* 海报背景区 */
   .qr-poster {
     background: linear-gradient(180deg, #FFFFFF 0%, #F3EFE8 100%);
-    padding: var(--sp-lg) var(--sp-md);
+    padding: 0 var(--sp-md);
     text-align: center;
     position: relative;
-    min-height: 580px;
+    flex: 1;
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+  .poster-spacer { flex: 1; display: flex; align-items: center; justify-content: center; }
+  .poster-top {
+    padding-top: 32px;
+  }
+  .poster-bottom {
+    padding-bottom: 24px;
   }
   .poster-placeholder-tag {
     position: absolute;
@@ -32,28 +40,35 @@
     font-size: 10px;
     padding: 2px 8px;
     border-radius: var(--radius-full);
+    pointer-events: none;
   }
   .qr-header {
-    margin-bottom: var(--sp-lg);
-  }
-  .qr-header-icon {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: var(--color-warm-bg);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto var(--sp-sm);
-    font-size: 28px;
-    box-shadow: none;
+    margin-bottom: 32px;
   }
   .qr-header-title {
-    font-size: var(--fs-lg);
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-title);
+    line-height: 1.5;
+  }
+  .qr-header-inviter {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 20px;
+    background: rgba(107,76,59,0.08);
+    border-radius: var(--radius-full);
+    margin-bottom: 8px;
+    font-size: var(--fs-sm);
+    color: var(--color-secondary);
+  }
+  .qr-header-inviter-name {
     font-weight: 700;
     color: var(--color-title);
   }
-  .qr-header-sub {
-    font-size: var(--fs-sm);
-    color: var(--color-secondary);
-    margin-top: var(--sp-xxs);
+  .qr-header-family {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-title);
+    margin-top: 2px;
   }
 
   /* 二维码卡片 */
@@ -73,7 +88,6 @@
     display: flex; align-items: center; justify-content: center;
   }
 
-  /* 模拟二维码图案 */
   .qr-pattern {
     width: 180px; height: 180px;
     position: relative;
@@ -91,7 +105,6 @@
   }
   .qr-cell.dark { background: var(--color-primary-dark); }
 
-  /* 三个定位框 */
   .qr-finder {
     position: absolute;
     width: 40px; height: 40px;
@@ -110,7 +123,6 @@
   .qr-finder.top-right { top: 0; right: 0; }
   .qr-finder.bottom-left { bottom: 0; left: 0; }
 
-  /* 中心 Logo */
   .qr-center-logo {
     position: absolute;
     width: 40px; height: 40px;
@@ -128,25 +140,6 @@
     margin-top: var(--sp-xs);
   }
 
-  /* 提示文字 */
-  .qr-tips {
-    padding: var(--sp-md);
-    text-align: center;
-  }
-  .qr-tip-item {
-    display: flex; align-items: center; gap: var(--sp-xs);
-    padding: var(--sp-xs) 0;
-    color: var(--color-secondary);
-    font-size: var(--fs-sm);
-  }
-  .qr-tip-dot {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: var(--color-title);
-    flex-shrink: 0;
-  }
-
-  /* 底部按钮 */
   .qr-bottom {
     padding: var(--sp-md);
     background: var(--color-white);
@@ -156,7 +149,6 @@
     display: flex; gap: var(--sp-sm);
   }
 
-  /* 二维码刷新动画 */
   .qr-refreshing {
     position: absolute;
     width: 100%; height: 100%;
@@ -172,7 +164,6 @@
 <body>
 
 <div class="phone-frame">
-  <!-- 导航栏 -->
   <div class="navbar">
     <button class="navbar-back" onclick="window.location.href='dashboard.html'">←</button>
     <div class="navbar-title">邀请家人</div>
@@ -180,37 +171,37 @@
 
   <div class="page-content">
 
-    <!-- 海报背景 + 二维码 -->
     <div class="qr-section">
       <div class="qr-poster">
         <div class="poster-placeholder-tag">运营海报背景位</div>
 
-        <div class="qr-header">
-          <div class="qr-header-icon">🏠</div>
-          <div class="qr-header-title">加入「快乐一家」</div>
-          <div class="qr-header-sub">扫码加入，共享家庭账户余额</div>
-        </div>
-
-        <!-- 二维码区域 -->
-        <div class="qr-code-card">
-          <div class="qr-code-canvas" id="qrCanvas">
-            <div class="qr-pattern">
-              <div class="qr-finder top-left"></div>
-              <div class="qr-finder top-right"></div>
-              <div class="qr-finder bottom-left"></div>
-              <div class="qr-pattern-inner" id="qrGrid"></div>
+        <div class="poster-spacer">
+          <div>
+            <div class="qr-header-inviter">
+              <span class="qr-header-inviter-name">小明</span> 邀请你加入
+            </div>
+            <div class="qr-header-family" style="margin-bottom:20px;">快乐一家</div>
+            <div class="qr-code-card">
+              <div class="qr-code-canvas" id="qrCanvas">
+                <div class="qr-pattern">
+                  <div class="qr-finder top-left"></div>
+                  <div class="qr-finder top-right"></div>
+                  <div class="qr-finder bottom-left"></div>
+                  <div class="qr-pattern-inner" id="qrGrid"></div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
 
-        <div class="qr-info-text">二维码 24 小时有效</div>
+        <div class="poster-bottom">
+          <div class="qr-info-text">二维码 24 小时有效</div>
+        </div>
       </div>
-
     </div>
 
   </div>
 
-  <!-- 底部操作 -->
   <div class="qr-bottom">
     <div class="qr-bottom-btns">
       <button class="btn btn-primary btn-block" style="flex:1;" onclick="shareQR()">分享给微信好友</button>
@@ -222,13 +213,11 @@
 </div>
 
 <script>
-// 随机填充二维码方格（模拟）
 (function generateQR() {
   const grid = document.getElementById('qrGrid');
   if (!grid) return;
   let html = '';
   for (let i = 0; i < 81; i++) {
-    // 跳过定位框覆盖区域
     const row = Math.floor(i / 9);
     const col = i % 9;
     const inFinder = (row < 3 && col < 3) || (row < 3 && col >= 6) || (row >= 6 && col < 3);
@@ -240,27 +229,6 @@
 
 function shareQR() {
   alert('模拟：分享二维码给微信好友');
-}
-
-function refreshQR() {
-  const canvas = document.getElementById('qrCanvas');
-  const refreshing = document.createElement('div');
-  refreshing.className = 'qr-refreshing';
-  refreshing.textContent = '正在刷新…';
-  canvas.appendChild(refreshing);
-  setTimeout(() => {
-    canvas.removeChild(refreshing);
-    (function generateQR() {
-      const grid = document.getElementById('qrGrid');
-      let html = '';
-      for (let i = 0; i < 81; i++) {
-        const row = Math.floor(i / 9), col = i % 9;
-        const inFinder = (row < 3 && col < 3) || (row < 3 && col >= 6) || (row >= 6 && col < 3);
-        html += `<div class="qr-cell${(!inFinder && Math.random() > 0.55) ? ' dark' : ''}"></div>`;
-      }
-      grid.innerHTML = html;
-    })();
-  }, 600);
 }
 
 function previewJoin() {

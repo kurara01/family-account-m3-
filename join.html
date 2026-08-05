@@ -39,24 +39,23 @@
     padding: 2px 8px;
     border-radius: var(--radius-full);
   }
-  .join-header-icon {
-    width: 64px; height: 64px;
-    border-radius: 50%;
-    background: var(--color-warm-bg);
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto var(--sp-sm);
-    font-size: 28px;
-    box-shadow: none;
-  }
-  .join-header-title {
-    font-size: var(--fs-lg);
-    font-weight: 700;
-    color: var(--color-title);
-    margin-bottom: var(--sp-xxs);
-  }
-  .join-header-sub {
+  .join-header-inviter {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 20px;
+    background: rgba(107,76,59,0.08);
+    border-radius: var(--radius-full);
+    margin-bottom: 8px;
     font-size: var(--fs-sm);
     color: var(--color-secondary);
+  }
+  .join-header-inviter-name {
+    font-weight: 700;
+    color: var(--color-title);
+  }
+  .join-header-family {
+    font-size: 22px;
+    font-weight: 700;
+    color: var(--color-title);
     margin-bottom: var(--sp-md);
   }
 
@@ -151,38 +150,20 @@
   <!-- 导航栏 -->
   <div class="navbar">
     <button class="navbar-back">←</button>
-    <div class="navbar-title">加入家庭</div>
+    <div class="navbar-title">加入家庭账户</div>
   </div>
 
   <div class="page-content">
 
     <!-- 海报背景 -->
     <div class="join-poster">
-      <div class="poster-placeholder-tag">运营海报背景位</div>
+      <div class="poster-placeholder-tag" style="display:none;">运营海报背景位</div>
 
-      <div class="join-header-icon">🏠</div>
-      <div class="join-header-title">加入「快乐一家」</div>
-      <div class="join-header-sub">和全家人一起共享家庭账户</div>
-
-      <!-- 家庭信息 -->
-      <div class="join-family-card">
-        <div class="join-family-row">
-          <span class="join-family-label">家庭名称</span>
-          <span class="join-family-value">快乐一家</span>
-        </div>
-        <div class="join-family-row">
-          <span class="join-family-label">当前成员</span>
-          <span class="join-family-value">3 人</span>
-        </div>
-        <div class="join-owner-row">
-          <div class="join-owner-avatar">🧑</div>
-          <div>
-            <div class="join-owner-name">小明</div>
-            <div class="join-owner-tag">家庭主号</div>
-          </div>
-          <div style="flex:1;text-align:right;font-size:var(--fs-sm);color:var(--color-title);font-weight:700;">邀请你加入</div>
-        </div>
+      <div class="join-header-inviter">
+        <span class="join-header-inviter-name">小明</span> 邀请你加入
       </div>
+      <div class="join-header-family">快乐一家</div>
+
     </div>
 
     <!-- 申请留言 -->

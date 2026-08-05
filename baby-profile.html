@@ -117,6 +117,28 @@ body {
   font-size: 16px; color: #bbb; display: flex; align-items: center; justify-content: center;
 }
 .baby-actions:active { background: #f0f0f0; }
+
+/* ===== 宝贝档案说明 ===== */
+.baby-notes {
+  margin: 12px 16px 20px;
+  background: #FBF9F6;
+  border: 1px solid #F0EAE2;
+  border-radius: 12px;
+  padding: 14px 16px;
+}
+.baby-notes-title {
+  font-size: 13px; font-weight: 700; color: #111; margin-bottom: 8px;
+}
+.baby-notes p {
+  font-size: 12px; color: #999; line-height: 1.6; margin-bottom: 6px;
+}
+.baby-notes p:last-child { margin-bottom: 0; }
+.baby-notes ul {
+  padding-left: 18px; margin-bottom: 6px;
+}
+.baby-notes li {
+  font-size: 12px; color: #999; line-height: 1.6;
+}
 </style>
 </head>
 <body>
@@ -189,6 +211,17 @@ body {
       <!-- 添加更多 -->
       <div style="text-align:center;padding:12px 0 4px;">
         <button class="btn-primary" style="display:inline-flex;width:auto;padding:0 24px;height:38px;font-size:14px;" onclick="goToAdd()">✚ 再添一位宝贝</button>
+      </div>
+
+      <!-- 宝贝档案说明 -->
+      <div class="baby-notes">
+        <div class="baby-notes-title">💡 宝贝档案说明</div>
+        <p>宝贝档案用于记录孩子的生日和喜好，添加后可享受：</p>
+        <ul>
+          <li>生日专属礼遇，到店出示家庭码即可领取</li>
+          <li>分年龄段商品推荐，匹配孩子喜好</li>
+        </ul>
+        <p>档案信息仅用于家庭账户个性化服务，我们将严格保护孩子的个人信息。</p>
       </div>
     </div>
 

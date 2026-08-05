@@ -44,8 +44,6 @@
   .setting-row-arrow { color: var(--color-placeholder); }
   .setting-row .red-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-error); margin-left: var(--sp-xs); }
 
-  .approval-badge { background: var(--color-error); color: var(--color-white); font-size: 10px; min-width: 18px; height: 18px; border-radius: 9px; display: flex; align-items: center; justify-content: center; margin-right: var(--sp-xs); font-weight: 600; }
-
   .member-mgmt-section { padding: var(--sp-xs) var(--sp-md); }
   .member-mgmt-item { display: flex; align-items: center; padding: var(--sp-sm) 0; border-bottom: 0.5px solid var(--color-divider); }
   .member-mgmt-item:last-child { border-bottom: none; }
@@ -54,14 +52,6 @@
   .member-mgmt-name { font-size: var(--fs-base); font-weight: 500; }
   .member-mgmt-role { font-size: var(--fs-xs); color: var(--color-placeholder); }
   .btn-remove { padding: 4px 12px; border-radius: var(--radius-full); border: 1px solid var(--color-error); color: var(--color-error); font-size: var(--fs-xs); background: none; cursor: pointer; }
-
-  .approval-list { padding: var(--sp-xs) var(--sp-md); }
-  .approval-item { display: flex; align-items: center; padding: var(--sp-sm) 0; border-bottom: 0.5px solid var(--color-divider); gap: var(--sp-sm); }
-  .approval-avatar { width: 44px; height: 44px; border-radius: 50%; background: var(--color-divider); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
-  .approval-info { flex: 1; min-width: 0; }
-  .approval-name { font-size: var(--fs-base); font-weight: 500; }
-  .approval-msg { font-size: var(--fs-sm); color: var(--color-secondary); margin-top: 2px; }
-  .approval-actions { display: flex; gap: var(--sp-xs); flex-shrink: 0; }
 
   .danger-zone { padding: var(--sp-md); border-top: 6px solid var(--color-bg); margin-top: var(--sp-sm); background: var(--color-white); }
   .danger-zone-title { font-size: var(--fs-sm); color: var(--color-placeholder); margin-bottom: var(--sp-sm); }
@@ -311,34 +301,6 @@
       </div>
     </div>
 
-    <!-- 待审批申请 -->
-    <div class="setting-group">
-      <div class="setting-row" onclick="toggleApprovalSection()">
-        <div class="setting-row-icon" style="background:rgba(255,77,79,0.08);">📋</div>
-        <div class="setting-row-content">
-          <div class="setting-row-label" style="display:flex;align-items:center;gap:6px;">
-            待审批申请
-            <span class="approval-badge">1</span>
-          </div>
-          <div class="setting-row-desc">有新成员申请加入</div>
-        </div>
-        <span class="setting-row-arrow" id="approvalArrow">↓</span>
-      </div>
-      <div class="approval-list" id="approvalSection" style="display:none;">
-        <div class="approval-item">
-          <div class="approval-avatar">👵</div>
-          <div class="approval-info">
-            <div class="approval-name">王妈妈</div>
-            <div class="approval-msg">留言：我是奶奶，帮忙照顾孩子，拉我进家庭~</div>
-          </div>
-          <div class="approval-actions">
-            <button class="btn btn-sm btn-primary" onclick="approve()">通过</button>
-            <button class="btn btn-sm btn-secondary" onclick="reject()">拒绝</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <!-- 消费限额（子账户维度） -->
     <div class="setting-group">
       <div class="setting-row" onclick="toggleLimitSection()">
@@ -367,7 +329,7 @@
             <span>元</span>
             <button class="btn btn-sm btn-primary" onclick="saveLimit()">保存</button>
           </div>
-          <div class="limit-hint" id="limitHint">设置后，每名家庭成员每周使用家庭账户金额不超过 ¥200</div>
+          <div class="limit-hint" id="limitHint">设置后，每日家庭账户消费金额不超过 ¥200</div>
         </div>
       </div>
     </div>
@@ -520,12 +482,6 @@ function toggleMemberSection() {
   el.style.display = el.style.display === 'none' ? 'block' : 'none';
   arrow.textContent = el.style.display === 'none' ? '↓' : '↑';
 }
-function toggleApprovalSection() {
-  const el = document.getElementById('approvalSection');
-  const arrow = document.getElementById('approvalArrow');
-  el.style.display = el.style.display === 'none' ? 'block' : 'none';
-  arrow.textContent = el.style.display === 'none' ? '↓' : '↑';
-}
 function toggleLimitSection() {
   const el = document.getElementById('limitSection');
   const arrow = document.getElementById('limitArrow');
@@ -582,7 +538,7 @@ function switchPeriod(period) {
 function updateLimitHint() {
   const hint = document.getElementById('limitHint');
   const label = PERIOD_LABELS[limitPeriod];
-  hint.textContent = '设置后，每名家庭成员' + label + '使用家庭账户金额不超过 ¥' + limitAmount;
+  hint.textContent = '设置后，' + label + '家庭账户消费金额不超过 ¥' + limitAmount;
 }
 
 function updateSummary() {
@@ -593,7 +549,7 @@ function updateSummary() {
     display.textContent = '';
   } else {
     const label = PERIOD_LABELS[limitPeriod];
-    desc.textContent = '每名家庭成员' + label + '使用家庭账户金额不超过 ¥' + limitAmount;
+    desc.textContent = label + '家庭账户消费金额不超过 ¥' + limitAmount;
     display.textContent = '¥' + limitAmount + '/' + (limitPeriod === 'day' ? '日' : limitPeriod === 'week' ? '周' : '月');
   }
 }
@@ -635,10 +591,6 @@ function saveLimit() {
 })();
 
 // --- 余额预警 ---
-
-// --- 审批 ---
-function approve() { alert('已通过申请'); document.getElementById('approvalSection').remove(); document.querySelector('.approval-badge').remove(); }
-function reject() { alert('已拒绝申请'); document.getElementById('approvalSection').remove(); document.querySelector('.approval-badge').remove(); }
 
 // --- 确认弹窗 ---
 let confirmAction = null;

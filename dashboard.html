@@ -40,6 +40,71 @@
   .info-card-value { font-family: var(--font-num); font-weight: 700; font-size: var(--fs-lg); color: var(--color-title); }
   .info-card-label { font-size: var(--fs-xs); color: var(--color-secondary); }
 
+  /* 储值会员等级进度卡（白底） */
+  .level-progress-card {
+    margin: 0 var(--sp-md) var(--sp-sm);
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    padding: var(--sp-sm) var(--sp-md);
+    box-shadow: var(--shadow-card);
+    cursor: pointer;
+    color: var(--color-title);
+  }
+  .level-progress-card:active { background: var(--color-warm-bg); }
+  .level-progress-top {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 8px;
+  }
+  .level-progress-title { font-size: var(--fs-base); font-weight: 700; color: var(--color-title); }
+  .level-progress-tag {
+    padding: 1px 8px; border-radius: var(--radius-full);
+    background: rgba(255,184,0,0.18); color: #B8860B;
+    font-size: var(--fs-xs); font-weight: 700;
+  }
+  .level-progress-valid { font-size: 10px; color: var(--color-placeholder); flex: 1; text-align: right; white-space: nowrap; }
+  .level-progress-btn {
+    margin-left: auto;
+    padding: 3px 12px; border-radius: var(--radius-full);
+    border: 1px solid var(--color-divider); color: var(--color-title);
+    font-size: var(--fs-xs); font-weight: 500;
+    white-space: nowrap;
+  }
+  .level-progress-amount {
+    font-size: var(--fs-sm); color: var(--color-title); margin-bottom: 18px;
+    display: flex; align-items: center; gap: 4px;
+  }
+  .level-progress-amount .num { font-family: var(--font-num); font-weight: 700; }
+  .level-progress-q {
+    width: 14px; height: 14px; border-radius: 50%;
+    border: 1px solid var(--color-placeholder); color: var(--color-placeholder);
+    font-size: 9px; display: inline-flex; align-items: center; justify-content: center;
+  }
+  .level-progress-track {
+    position: relative; height: 18px; margin: 0 4px;
+  }
+  .level-progress-line {
+    position: absolute; top: 5px; left: 0; right: 0;
+    height: 2px; background: var(--color-bg);
+  }
+  .level-progress-fill {
+    position: absolute; top: 5px; left: 0;
+    height: 2px; background: #A08070;
+  }
+  .level-progress-node {
+    position: absolute; top: 0; transform: translateX(-50%);
+  }
+  .level-progress-dot {
+    width: 12px; height: 12px; border-radius: 50%;
+    background: var(--color-divider); color: var(--color-placeholder);
+    font-size: 7px; display: flex; align-items: center; justify-content: center;
+    font-weight: 700; position: relative; z-index: 2; margin: 0 auto;
+  }
+  .level-progress-dot.done { background: #A08070; color: #fff; }
+  .level-progress-node-label {
+    position: absolute; top: 15px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; color: var(--color-placeholder); white-space: nowrap;
+  }
+
   .mall-entry-card {
     margin: 0 var(--sp-md) var(--sp-sm);
     background: linear-gradient(135deg, #F7F4EF 0%, #FFFFFF 100%);
@@ -89,6 +154,73 @@
     background: var(--color-white); border-radius: 0 0 var(--radius-md) var(--radius-md);
   }
   .member-fold-btn:active { background: var(--color-bg); }
+
+  /* 待加入成员审批（家庭成员区域） */
+  .pending-applications {
+    margin: 0 var(--sp-md) var(--sp-sm);
+    background: var(--color-white);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+  }
+  .pending-app-header {
+    display: flex; align-items: center; gap: 6px;
+    padding: var(--sp-sm) var(--sp-md);
+    border-bottom: 0.5px solid var(--color-divider);
+  }
+  .pending-app-title { font-size: var(--fs-sm); font-weight: 600; color: var(--color-title); }
+  .pending-badge {
+    background: var(--color-error); color: #fff;
+    font-size: 10px; min-width: 16px; height: 16px; border-radius: 8px;
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 0 4px; font-weight: 600;
+  }
+  .approval-item {
+    display: flex; align-items: center; padding: var(--sp-sm) var(--sp-md);
+    gap: var(--sp-sm);
+  }
+  .approval-avatar {
+    width: 40px; height: 40px; border-radius: 50%;
+    background: var(--color-warm-bg); display: flex; align-items: center;
+    justify-content: center; font-size: 20px; flex-shrink: 0;
+  }
+  .approval-info { flex: 1; min-width: 0; }
+  .approval-name { font-size: var(--fs-base); font-weight: 500; color: var(--color-title); }
+  .approval-msg { font-size: var(--fs-xs); color: var(--color-secondary); margin-top: 2px; }
+  .approval-actions { display: flex; gap: var(--sp-xs); flex-shrink: 0; }
+
+  /* 身份选择弹窗（审批加入时一次性选择） */
+  .identity-picker {
+    position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.5); z-index: 20;
+    display: none; align-items: center; justify-content: center;
+  }
+  .identity-picker.show { display: flex; }
+  .identity-picker-card {
+    width: 280px; background: var(--color-white);
+    border-radius: var(--radius-lg); padding: var(--sp-md);
+    text-align: center;
+  }
+  .identity-picker-card h3 { font-size: var(--fs-md); margin-bottom: var(--sp-sm); color: var(--color-title); }
+  .identity-picker-card .member-name { font-size: var(--fs-sm); color: var(--color-secondary); margin-bottom: var(--sp-sm); }
+  .identity-options { display: flex; flex-wrap: wrap; gap: var(--sp-xs); justify-content: center; margin-bottom: var(--sp-md); }
+  .identity-option {
+    padding: 6px 14px; border-radius: var(--radius-full);
+    font-size: var(--fs-sm); border: 1px solid var(--color-divider);
+    background: var(--color-white); color: var(--color-body);
+    cursor: pointer; transition: all 0.15s; font-family: var(--font-cn);
+  }
+  .identity-option:active { border-color: var(--color-primary); }
+  .identity-option.selected { background: var(--color-primary); color: var(--color-white); border-color: var(--color-primary); }
+  .identity-option.none { color: var(--color-placeholder); font-style: italic; }
+  .identity-custom-area { border-top: 1px solid var(--color-divider); padding-top: var(--sp-sm); margin-top: var(--sp-xs); }
+  .identity-custom-input {
+    width: 100%; padding: 8px 12px; border-radius: var(--radius-md);
+    border: 1px solid var(--color-divider); font-size: var(--fs-sm);
+    text-align: center; font-family: var(--font-cn); box-sizing: border-box;
+  }
+  .identity-custom-input:focus { border-color: var(--color-primary); outline: none; }
+  .identity-custom-char-count { font-size: 11px; color: var(--color-placeholder); margin: 4px 0 var(--sp-sm); }
 
   /* 消费动态 */
   .tx-preview-card { margin: 0 var(--sp-md); }
@@ -150,7 +282,7 @@
       </div>
     </div>
 
-    <!-- 信息卡片网格（三区域） -->
+    <!-- 信息卡片网格（两区域） -->
     <div class="info-grid">
       <div class="info-card" onclick="goToPoints()">
         <div class="info-card-value">1,280</div>
@@ -160,9 +292,35 @@
         <div class="info-card-value">3</div>
         <div class="info-card-label">优惠券</div>
       </div>
-      <div class="info-card" onclick="goToLevels()">
-        <div class="info-card-value">V2</div>
-        <div class="info-card-label">家庭等级</div>
+    </div>
+
+    <!-- 储值会员等级进度 -->
+    <div class="level-progress-card" onclick="goToLevels()">
+      <div class="level-progress-top">
+        <span class="level-progress-title">储值会员</span>
+        <span class="level-progress-tag">V2</span>
+        <span class="level-progress-valid">有效期：2026.07.10-2027.07.10</span>
+      </div>
+      <div class="level-progress-amount">
+        有效期内累计储值金额 <span class="num">100</span> 元
+        <span class="level-progress-q">?</span>
+        <span class="level-progress-btn">去升级</span>
+      </div>
+      <div class="level-progress-track">
+        <div class="level-progress-node" style="left:0%;">
+          <div class="level-progress-dot done">1</div>
+          <div class="level-progress-node-label">100元</div>
+        </div>
+        <div class="level-progress-node" style="left:50%;">
+          <div class="level-progress-dot">2</div>
+          <div class="level-progress-node-label">500元</div>
+        </div>
+        <div class="level-progress-node" style="left:100%;">
+          <div class="level-progress-dot">3</div>
+          <div class="level-progress-node-label">1000元</div>
+        </div>
+        <div class="level-progress-line"></div>
+        <div class="level-progress-fill" style="width:25%;"></div>
       </div>
     </div>
 
@@ -194,6 +352,25 @@
         <div class="mall-entry-desc">使用家庭积分兑换专属优惠券</div>
       </div>
       <span class="mall-entry-arrow">→</span>
+    </div>
+
+    <!-- 待加入成员审批（仅主号展示，置于家庭成员上方） -->
+    <div class="pending-applications" id="pendingApplications">
+      <div class="pending-app-header">
+        <span class="pending-app-title">待加入成员</span>
+        <span class="pending-badge" id="pendingBadge">1</span>
+      </div>
+      <div class="approval-item">
+        <div class="approval-avatar">👵</div>
+        <div class="approval-info">
+          <div class="approval-name">王妈妈</div>
+          <div class="approval-msg">留言：我是奶奶，帮忙照顾孩子，拉我进家庭~</div>
+        </div>
+        <div class="approval-actions">
+          <button class="btn btn-sm btn-primary" onclick="openApprovePicker()">通过</button>
+          <button class="btn btn-sm btn-secondary" onclick="rejectApplicant()">拒绝</button>
+        </div>
+      </div>
     </div>
 
     <!-- 成员列表 -->
@@ -275,6 +452,20 @@
     </div>
 
   </div>
+
+  <!-- 身份选择弹窗（审批通过时一次性选择） -->
+  <div class="identity-picker" id="identityPicker">
+    <div class="identity-picker-card">
+      <h3>选择家庭身份</h3>
+      <div class="member-name" id="identityPickerName">为王妈妈选择身份</div>
+      <div class="identity-options" id="identityOptions"></div>
+      <div class="identity-custom-area">
+        <input class="identity-custom-input" id="identityCustomInput" placeholder="自定义，不超过3个字" maxlength="3" oninput="onCustomInput(this)">
+        <div class="identity-custom-char-count"><span id="customCharCount">0</span>/3</div>
+      </div>
+      <button class="btn btn-primary btn-block" onclick="confirmApprove()">通过并加入</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -308,6 +499,53 @@ function toggleMembers(btn) {
   const expanded = rows[0].classList.contains('show');
   rows.forEach(r => r.classList.toggle('show', !expanded));
   btn.innerHTML = expanded ? '<span>展开更多</span><span style="font-size:10px;">▾</span>' : '<span>收起</span><span style="font-size:10px;">▴</span>';
+}
+
+// ===== 待加入成员审批 =====
+const APPROVE_IDENTITIES = ['爸爸', '妈妈', '儿子', '女儿', '爷爷', '奶奶', '外公', '外婆', '哥哥', '姐姐', '弟弟', '妹妹', '不设置'];
+let approveIdentity = null;
+
+function openApprovePicker() {
+  approveIdentity = null;
+  const optionsEl = document.getElementById('identityOptions');
+  optionsEl.innerHTML = APPROVE_IDENTITIES.map(id => {
+    const cls = 'identity-option' + (id === '不设置' ? ' none' : '');
+    return '<span class="' + cls + '" onclick="selectApproveIdentity(this, \'' + id + '\')">' + id + '</span>';
+  }).join('');
+  document.getElementById('identityCustomInput').value = '';
+  document.getElementById('customCharCount').textContent = '0';
+  document.getElementById('identityPicker').classList.add('show');
+}
+
+function selectApproveIdentity(el, identity) {
+  document.querySelectorAll('.identity-option').forEach(o => o.classList.remove('selected'));
+  el.classList.add('selected');
+  approveIdentity = identity;
+  document.getElementById('identityCustomInput').value = '';
+  document.getElementById('customCharCount').textContent = '0';
+}
+
+function onCustomInput(input) {
+  document.getElementById('customCharCount').textContent = input.value.length;
+  if (input.value.length > 0) {
+    document.querySelectorAll('.identity-option').forEach(o => o.classList.remove('selected'));
+    approveIdentity = null;
+  }
+}
+
+function confirmApprove() {
+  const customValue = document.getElementById('identityCustomInput').value.trim();
+  const identity = customValue || approveIdentity;
+  if (!identity) { alert('请先选择家庭身份'); return; }
+  document.getElementById('identityPicker').classList.remove('show');
+  const card = document.getElementById('pendingApplications');
+  card.remove();
+  alert('已通过王妈妈加入家庭（身份：' + identity + '）');
+}
+
+function rejectApplicant() {
+  document.getElementById('pendingApplications').remove();
+  alert('已拒绝王妈妈的加入申请');
 }
 
 </script>
